@@ -17,16 +17,16 @@ st.set_page_config(
 #def set_bg(image_file):
   #  with open(image_file, "rb") as file:
     #    encoded = base64.b64encode(file.read()).decode()
-st.markdown(f"""
+#st.markdown(f"""
     <style>
-    .stApp {{
-        background-image: url("data:image/jpg;base64,{encoded}");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+  #  .stApp {{
+      #  background-image: url("data:image/jpg;base64,{encoded}");
+      #  background-size: cover;
+       # background-position: center;
+       # background-attachment: fixed;
     }}
-    </style>
-    """, unsafe_allow_html=True)
+ #   </style>
+ #   """, unsafe_allow_html=True)
 
 # 👉 Weka jina la picha yako hapa (iwe kwenye folder moja na app.py)
 #set_bg("background.jpg")
@@ -109,39 +109,40 @@ if st.button("Predict Wastewater Volume"):
 
 
 #load trained model
-model = joblib.load(r"models\wastewater_model.pkl")
+#model = joblib.load(r"models\wastewater_model.pkl")
 
-st.title("Wastewater Volume Prediction App")
+#st.title("Wastewater Volume Prediction App")
 
 #user input
-total_population = st.number_input("Enter total population",
-                                   min_value=0.0,
-                                   value=None,
-                                   placeholder="eg3000")
+#total_population = st.number_input("Enter total population",
+                               #    min_value=0.0,
+                                 #  value=None,
+                                  # placeholder="eg3000")
 
-avg_domestic_water_use = st.number_input("Enter domestic water usage",
-                                          min_value=0.0,
-                                   value=None,
-                                   placeholder="eg3000")
+#avg_domestic_water_use = st.number_input("Enter domestic water usage",
+                                        #  min_value=0.0,
+                              #     value=None,
+                               #    placeholder="eg3000")
 
-industrial_water_use = st.number_input("Enter industrial water use",
-                                        min_value=0.0,
-                                   value=None,
-                                   placeholder="eg3000")
+#industrial_water_use = st.number_input("Enter industrial water use",
+      #                                  min_value=0.0,
+      #                             value=None,
+      #                             placeholder="eg3000")
 
-sewer_connection_rate = st.number_input("Enter sewer connection rate",
-                                         min_value=0.0,
-                                   value=None,
-                                   placeholder="eg3000")
+#sewer_connection_rate = st.number_input("Enter sewer connection rate",
+            #                             min_value=0.0,
+             #                      value=None,
+            #                       placeholder="eg3000")
 
-rainfall_mm = st.number_input("Enter amount of rainfall (mm)",
-                               min_value=0.0,
-                                   value=None,
-                                   placeholder="eg3000")
+#rainfall_mm = st.number_input("Enter amount of rainfall (mm)",
+#min_value=0.0,
+                     #              value=None,
+                         #          placeholder="eg3000")
 
-if st.button("Predict"):
-    input_data = np.array([[total_population ,avg_domestic_water_use , industrial_water_use , sewer_connection_rate ,rainfall_mm]])
-    prediction = model.predict(input_data)
+#if st.button("Predict"):
+ #   input_data = np.array([[total_population ,avg_domestic_water_use , industrial_water_use , sewer_connection_rate ,rainfall_mm]])
+  #  prediction = model.predict(input_data)
 
-    st.success(f"Predicted Wastewater Volume:{prediction[0]}")
+  #  st.success(f"Predicted Wastewater Volume:{prediction[0]}")
+
 
