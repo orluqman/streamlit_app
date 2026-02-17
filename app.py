@@ -14,9 +14,9 @@ st.set_page_config(
 )
 
 # ----------- FUNCTION YA KUWEKA BACKGROUND IMAGE -----------
-def set_bg(image_file):
-    with open(image_file, "rb") as file:
-        encoded = base64.b64encode(file.read()).decode()
+#def set_bg(image_file):
+  #  with open(image_file, "rb") as file:
+    #    encoded = base64.b64encode(file.read()).decode()
     st.markdown(f"""
     <style>
     .stApp {{
@@ -29,7 +29,7 @@ def set_bg(image_file):
     """, unsafe_allow_html=True)
 
 # 👉 Weka jina la picha yako hapa (iwe kwenye folder moja na app.py)
-set_bg("background.jpg")
+#set_bg("background.jpg")
 
 
 # ----------- CUSTOM CSS -----------
@@ -142,4 +142,5 @@ rainfall_mm = st.number_input("Enter amount of rainfall (mm)",
 if st.button("Predict"):
     input_data = np.array([[total_population ,avg_domestic_water_use , industrial_water_use , sewer_connection_rate ,rainfall_mm]])
     prediction = model.predict(input_data)
+
     st.success(f"Predicted Wastewater Volume:{prediction[0]}")
