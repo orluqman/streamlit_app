@@ -24,7 +24,7 @@ st.set_page_config(
       #  background-size: cover;
        # background-position: center;
        # background-attachment: fixed;
-    }}
+ #   }}
  #   </style>
  #   """, unsafe_allow_html=True)
 
@@ -144,6 +144,7 @@ if st.button("Predict Wastewater Volume"):
   #  prediction = model.predict(input_data)
 
   #  st.success(f"Predicted Wastewater Volume:{prediction[0]}")
+
 
 
 
