@@ -1,2 +1,5 @@
 streamlit
+
 numpy
+joblib
+scikit-learn
