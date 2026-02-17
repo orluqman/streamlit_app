@@ -17,7 +17,7 @@ st.set_page_config(
 #def set_bg(image_file):
   #  with open(image_file, "rb") as file:
     #    encoded = base64.b64encode(file.read()).decode()
-    st.markdown(f"""
+st.markdown(f"""
     <style>
     .stApp {{
         background-image: url("data:image/jpg;base64,{encoded}");
@@ -144,3 +144,4 @@ if st.button("Predict"):
     prediction = model.predict(input_data)
 
     st.success(f"Predicted Wastewater Volume:{prediction[0]}")
+
