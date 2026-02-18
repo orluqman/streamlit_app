@@ -4,147 +4,258 @@ import joblib
 import numpy as np
 import streamlit as st
 
-import streamlit as st
-import numpy as np
-import base64
+#load trained model
+model = joblib.load(r"models\wastewater_model.pkl")
 
+# --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="Wastewater Prediction App",
-    layout="wide"
+    page_title="Wastewater Prediction System",
+    layout="wide",
 )
 
-# ----------- FUNCTION YA KUWEKA BACKGROUND IMAGE -----------
-#def set_bg(image_file):
-  #  with open(image_file, "rb") as file:
-    #    encoded = base64.b64encode(file.read()).decode()
-#st.markdown(f"""
- #   <style>
-  #  .stApp {{
-      #  background-image: url("data:image/jpg;base64,{encoded}");
-      #  background-size: cover;
-       # background-position: center;
-       # background-attachment: fixed;
- #   }}
- #   </style>
- #   """, unsafe_allow_html=True)
+# # --- CUSTOM CSS ---
+# st.markdown("""
+# <style>
+# /* Hide Streamlit default menu, footer, and header */
+# #MainMenu {visibility: hidden;}
+# footer {visibility: hidden;}
+# header {visibility: hidden;}
 
-# 👉 Weka jina la picha yako hapa (iwe kwenye folder moja na app.py)
-#set_bg("background.jpg")
+# /* App background */
+# [data-testid="stAppViewContainer"] {
+#     background: linear-gradient(to right, #e0f7fa, #ffffff);
+# }
+# /* Dashboard card */
+# .dashboard-card {
+#       background: white;
+#       padding: 32px;
+#       border-radius:16px;
+#       box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+#       max-width: 850px;
+#       margin: auto;                                               
+#        }
 
 
-# ----------- CUSTOM CSS -----------
+# /* title */
+#   .dashboard-title {
+#        font-size: 26px;
+#         font-weight: 700;
+#         margin-bottom: 8px;
+#         color: #0f172a;                          
+# }
+
+#   /* Subtitle */  
+#    .dashboard-subtitle{
+#             font-size: 15px;
+#             color: #64748b;
+#             margin-bottom: 28px;
+#      }                 
+# /* Header */
+# .header {
+#     background-color: #00796B;
+#     padding: 20px;
+#     border-radius: 10px;
+#     text-align: center;
+#     color: white;
+#     font-size: 36px;
+#     font-weight: bold;
+#     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+# }
+
+# /* Input boxes */
+# .stNumberInput > div > input {
+#     border-radius: 8px;
+#     border: 1px solid #00796B;
+#     padding: 8px;
+# }
+
+# /* input label styling */
+#     label {
+#         font-size: 16px !important;
+#         font-weight: 600 !important;
+#         color: #0ea5e9 !important;    /* blue professional */           
+#      }      
+
+#     /* Make labels stand out slightly more */
+#       div[data-testid="stNumberInput"] label {
+#         margin-bottom: 6px   
+#      }                           
+# /* Buttons */
+# div.stButton > button {
+#     background-color: #009688;
+#     color: white;
+#     border-radius: 8px;
+#     height: 3em;
+#     width: 100%;
+#     font-size: 16px;
+#     border: none;
+#     font-weight: bold;
+# }
+
+# div.stButton > button:hover {
+#     background-color: #00796B;
+#     color: white;
+# }
+
+#   /*Inputs spacing*/
+#    div[data-baseweb="input"] {
+#     margin-bottom: 15px;
+#      }  
+
+#   /* Balanced input width */
+#      div[data-baseweb="input"] > div {
+#         display: flex;
+#         max-width: 320px;       
+#        min-width: 260px; 
+#     }        
+     
+#  /* improve input height */
+#      div[data-baseweb="input"] input {
+#         height: 42px    
+#     }                                                       
+# /* Footer */
+# .footer {
+#     text-align: center;
+#     padding: 10px;
+#     background-color: #004D40;
+#     color: white;
+#     border-radius: 10px;
+#     margin-top: 20px;
+#     font-size: 14px;
+# }
+# </style>
+# """, unsafe_allow_html=True)
+
+
 st.markdown("""
 <style>
-
-/* Glass effect container */
-.block-container {
-    background: rgba(255,255,255,0.85);
-    padding: 2rem;
-    border-radius: 15px;
+/* ===== Government theme ===== */
+.stApp {
+    background-color: #f1f5f9;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Header */
-.main-title {
-    font-size: 40px;
-    font-weight: bold;
-    color: #1B4F72;
-    text-align: center;
-    margin-bottom: 10px;
+/* Header bar */
+.gov-header {
+    background: #0f172a;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 10px;
+    margin-bottom: 24px;
 }
 
-.sub-text {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 30px;
+.gov-title {
+    font-size: 22px;
+    font-weight: 700;
 }
 
-/* Input styling */
+.gov-subtitle {
+    font-size: 14px;
+    color: #cbd5f5;
+}
+
+/* Card */
+.dashboard-card {
+    border: 1px solid #cbd5e1;
+    box-shadow: none;
+    border-radius: 8px;
+}
+
+/* Section title */
+.gov-section {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1f2937;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 6px;
+    margin: 20px 0 16px 0;
+}
+
+/* Labels */
+label {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #1e3a8a !important;  /* gov blue */
+}
+
+/* Inputs */
 div[data-baseweb="input"] > div {
-    border-radius: 10px !important;
-    border: 2px solid #2E86C1 !important;
+    min-width: 280px;
+    max-width: 340px;
+}
+div[data-baseweb="input"] input {
+    height: 44px;
+    border-radius: 6px;
+    border: 1px solid #94a3b8;
 }
 
 /* Button */
 div.stButton > button {
-    background-color: #2E86C1;
-    color: white;
-    border-radius: 10px;
-    height: 3em;
-    width: 100%;
-    font-size: 18px;
-    border: none;
+    background: #1e3a8a;
+    border-radius: 6px;
+    font-size: 16px;
 }
-
 div.stButton > button:hover {
-    background-color: #154360;
-    color: white;
+    background: #1d4ed8;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
-# ----------- HEADER -----------
-st.markdown('<div class="main-title">💧 Wastewater Volume Prediction</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-text">Enter ward details below</div>', unsafe_allow_html=True)
 
-# ----------- INPUT COLUMNS -----------
-col1, col2, col3 = st.columns(3)
 
-with col1:
-    population = st.number_input("Population", min_value=0)
+# --- HEADER ---
+st.markdown('<div class="header">Wastewater Volume Prediction System 💧</div>', unsafe_allow_html=True)
+st.markdown('<div class="dashboard-card">',unsafe_allow_html=True)
 
-with col2:
-    rainfall = st.number_input("Rainfall (mm)", min_value=0.0)
+st.markdown('<div class="dashboard-title"> Wastewater Prediction Dashboard</div>',unsafe_allow_html=True)
+st.markdown('<div class="dashboard-subtitle">Enter the system parameters to estimate wastewater volume</div>'
+            ,unsafe_allow_html=True)
 
+#-----------ROW 1----------------------
+col1, col2 = st.columns(2)
+
+with col1 :
+    population = st.number_input("👭 Population",min_value=0.0, value=None)
+    
+    with col2:
+     rainfall = st.number_input("Rainfall (mm)",min_value=0.0,value=None)  
+
+
+     #------------ROW 2--------------
+
+col3, col4 =st.columns(2)
 with col3:
-    households = st.number_input("Households", min_value=0)
+   avg_domestic_water_use =st.number_input("Domestic water use (L/day)",min_value=0.0,value=None) 
 
-st.markdown("<br>", unsafe_allow_html=True)
+with col4:
+   industrial_water_use = st.number_input("Industrial water use (L/day)",min_value=0.0,value=None)   
 
-# ----------- SINGLE PREDICT BUTTON -----------
+# --- INPUTS ---
+#st.markdown('<div class="section-title">Enter details below:</div>',unsafe_allow_html=True)
+
+#---------------ROW 3 (CENTRED)-----------------
+col5, col6, col7 = st.columns([1, 2, 1])
+with col6:
+   sewer_connection_rate = st.number_input("Sewer connection rate(%)",min_value=0.0, max_value=100.0 ,value=None)
+
+   st.markdown("---")
+# --- BUTTON ---
 if st.button("Predict Wastewater Volume"):
-    prediction = population * 0.2 + rainfall * 1.5 + households * 0.5
-    st.success(f"Predicted Wastewater Volume: {prediction:,.2f} Liters")
-
+    input_data = [[
+        population,
+        rainfall,
+        avg_domestic_water_use,
+        industrial_water_use,
+        sewer_connection_rate,
+    ]]
+    predict = model.predict(input_data)[0]
+    # Dummy prediction for now
+    
+    st.success(f"💧 Predicted Wastewater Volume: {predict:.2f} m³")
+st.markdown('</div>',unsafe_allow_html=True)
+# --- FOOTER ---
+st.markdown('<div class="footer">© 2026 Ministry of Water Resources | Data is confidential</div>', unsafe_allow_html=True)
 
 
 #load trained model
 #model = joblib.load(r"models\wastewater_model.pkl")
-
-#st.title("Wastewater Volume Prediction App")
-
-#user input
-#total_population = st.number_input("Enter total population",
-                               #    min_value=0.0,
-                                 #  value=None,
-                                  # placeholder="eg3000")
-
-#avg_domestic_water_use = st.number_input("Enter domestic water usage",
-                                        #  min_value=0.0,
-                              #     value=None,
-                               #    placeholder="eg3000")
-
-#industrial_water_use = st.number_input("Enter industrial water use",
-      #                                  min_value=0.0,
-      #                             value=None,
-      #                             placeholder="eg3000")
-
-#sewer_connection_rate = st.number_input("Enter sewer connection rate",
-            #                             min_value=0.0,
-             #                      value=None,
-            #                       placeholder="eg3000")
-
-#rainfall_mm = st.number_input("Enter amount of rainfall (mm)",
-#min_value=0.0,
-                     #              value=None,
-                         #          placeholder="eg3000")
-
-#if st.button("Predict"):
- #   input_data = np.array([[total_population ,avg_domestic_water_use , industrial_water_use , sewer_connection_rate ,rainfall_mm]])
-  #  prediction = model.predict(input_data)
-
-  #  st.success(f"Predicted Wastewater Volume:{prediction[0]}")
-
-
-
-
